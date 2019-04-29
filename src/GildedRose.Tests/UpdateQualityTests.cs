@@ -131,19 +131,25 @@ namespace GildedRose.Tests
             Assert.Equal(sellIn, item.SellIn);
         }
 
+        
         [Theory]
-        [InlineData(1,1)]
+        [InlineData(11,11)]
+        [InlineData(12, 10)]
+        [InlineData(13,5)]
+        [InlineData(12,6)]
+        [InlineData(0,0)]
+        [InlineData(13,1)]
         public void BackStagePasses_QualityIncreases(int expectedQuality, int sellIn)
         {
             var item = new Item
             {
-                Quality = 50,
-                SellIn = 2,
+                Quality = 10,
+                SellIn = sellIn,
                 Name = "Backstage passes to a TAFKAL80ETC concert"
             };
 
             Program.UpdateItem(item);
-            Assert.Equal(50, item.Quality);
+            Assert.Equal(expectedQuality, item.Quality);
         }
     }
 }
