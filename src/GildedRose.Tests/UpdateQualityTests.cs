@@ -44,17 +44,23 @@ namespace GildedRose.Tests
             Assert.Equal(0, item.Quality);
         }
 
-        [Fact]
-        public void QualityOfAnItemIsNeverNegative()
+        [Theory]
+        [InlineData("+5 Dexterity Vest")]
+        [InlineData("Elixir of the Mongoose")]
+        [InlineData("Sulfuras, Hand of Ragnaros")]
+        [InlineData("Backstage passes to a TAFKAL80ETC concert")]
+        [InlineData("Conjured Mana Cake")]
+        public void QualityOfAnItemIsNeverNegative(string productName)
         {
             var item = new Item
             {
                 Quality = 0,
-                SellIn = 0
+                SellIn = 0,
+                Name = productName
             };
 
             Program.UpdateItem(item);
-            Assert.Equal(0, item.Quality);
+            Assert.True(item.Quality >= 0);
         }
 
         [Fact]
@@ -89,6 +95,7 @@ namespace GildedRose.Tests
         [InlineData("Aged Brie")]
         [InlineData("Backstage passes to a TAFKAL80ETC concert")]
         [InlineData("Backstage passes to a TAFKAL80ETC concert", 2, 48)]
+        [InlineData("Backstage passes to a TAFKAL80ETC concert", 10, 49)]
         public void QualityOfAnItemIsNeverGreaterThan50(string itemName, int sellIn = 2, int initialQuality = 50)
         {
             var item = new Item

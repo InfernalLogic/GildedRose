@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GildedRose.Console
 {
@@ -41,39 +42,26 @@ namespace GildedRose.Console
 
         public static void UpdateItem(Item item)
         {
-            if (item.Name != "Aged Brie" && item.Name != "Backstage passes to a TAFKAL80ETC concert")
+            if (item.Name != "Aged Brie"
+                && item.Name != "Backstage passes to a TAFKAL80ETC concert"
+                && item.Name != "Sulfuras, Hand of Ragnaros")
             {
-                if (item.Quality > 0)
-                {
-                    if (item.Name != "Sulfuras, Hand of Ragnaros")
-                    {
-                        item.Quality = item.Quality - 1;
-                    }
-                }
+                item.Quality = item.Quality - 1;
             }
-            else
+            else if (item.Quality < 50)
             {
-                if (item.Quality < 50)
+                item.Quality = item.Quality + 1;
+
+                if (item.Name == "Backstage passes to a TAFKAL80ETC concert")
                 {
-                    item.Quality = item.Quality + 1;
-
-                    if (item.Name == "Backstage passes to a TAFKAL80ETC concert")
+                    if (item.SellIn < 11)
                     {
-                        if (item.SellIn < 11)
-                        {
-                            if (item.Quality < 50)
-                            {
-                                item.Quality = item.Quality + 1;
-                            }
-                        }
+                        item.Quality = item.Quality + 1;
+                    }
 
-                        if (item.SellIn < 6)
-                        {
-                            if (item.Quality < 50)
-                            {
-                                item.Quality = item.Quality + 1;
-                            }
-                        }
+                    if (item.SellIn < 6)
+                    {
+                        item.Quality = item.Quality + 1;
                     }
                 }
             }
@@ -89,12 +77,9 @@ namespace GildedRose.Console
                 {
                     if (item.Name != "Backstage passes to a TAFKAL80ETC concert")
                     {
-                        if (item.Quality > 0)
+                        if (item.Name != "Sulfuras, Hand of Ragnaros")
                         {
-                            if (item.Name != "Sulfuras, Hand of Ragnaros")
-                            {
-                                item.Quality = item.Quality - 1;
-                            }
+                            item.Quality = item.Quality - 1;
                         }
                     }
                     else
@@ -104,12 +89,12 @@ namespace GildedRose.Console
                 }
                 else
                 {
-                    if (item.Quality < 50)
-                    {
-                        item.Quality = item.Quality + 1;
-                    }
+                    item.Quality = item.Quality + 1;
                 }
             }
+
+            item.Quality = Math.Min(item.Quality, 50);
+            item.Quality = Math.Max(item.Quality, 0);
         }
     }
 
