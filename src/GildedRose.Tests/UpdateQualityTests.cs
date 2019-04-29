@@ -88,12 +88,13 @@ namespace GildedRose.Tests
         [Theory]
         [InlineData("Aged Brie")]
         [InlineData("Backstage passes to a TAFKAL80ETC concert")]
-        public void QualityOfAnItemIsNeverGreaterThan50(string itemName)
+        [InlineData("Backstage passes to a TAFKAL80ETC concert", 2, 48)]
+        public void QualityOfAnItemIsNeverGreaterThan50(string itemName, int sellIn = 2, int initialQuality = 50)
         {
             var item = new Item
             {
-                Quality = 50,
-                SellIn = 2,
+                Quality = initialQuality,
+                SellIn = sellIn,
                 Name = itemName
             };
 
