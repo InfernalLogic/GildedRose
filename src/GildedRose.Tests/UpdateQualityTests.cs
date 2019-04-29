@@ -36,8 +36,53 @@ namespace GildedRose.Tests
         {
             var item = new Item
             {
-                
+                Quality = 2,
+                SellIn = 0
             };
+
+            Program.UpdateItem(item);
+            Assert.Equal(0, item.Quality);
+        }
+
+        [Fact]
+        public void QualityOfAnItemIsNeverNegative()
+        {
+            var item = new Item
+            {
+                Quality = 0,
+                SellIn = 0
+            };
+
+            Program.UpdateItem(item);
+            Assert.Equal(0, item.Quality);
+        }
+
+        [Fact]
+        public void QualityOfAgedBrieIncreases_AsTimeGoesBy()
+        {
+            var item = new Item
+            {
+                Quality = 0,
+                SellIn = 1,
+                Name = "Aged Brie"
+            };
+
+            Program.UpdateItem(item);
+            Assert.Equal(1, item.Quality);
+        }
+
+        [Fact]
+        public void QualityOfAgedBrieIncreasesByTwo_AfterExpiration()
+        {
+            var item = new Item
+            {
+                Quality = 0,
+                SellIn = 0,
+                Name = "Aged Brie"
+            };
+
+            Program.UpdateItem(item);
+            Assert.Equal(2, item.Quality);
         }
     }
 }
