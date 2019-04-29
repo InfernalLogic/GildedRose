@@ -84,5 +84,19 @@ namespace GildedRose.Tests
             Program.UpdateItem(item);
             Assert.Equal(2, item.Quality);
         }
+
+        [Fact]
+        public void QualityOfAnItemIsNeverGreaterThan50()
+        {
+            var item = new Item
+            {
+                Quality = 49,
+                SellIn = 0,
+                Name = "Aged Brie"
+            };
+
+            Program.UpdateItem(item);
+            Assert.Equal(2, item.Quality);
+        }
     }
 }
