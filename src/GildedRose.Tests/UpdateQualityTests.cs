@@ -85,18 +85,65 @@ namespace GildedRose.Tests
             Assert.Equal(2, item.Quality);
         }
 
-        [Fact]
-        public void QualityOfAnItemIsNeverGreaterThan50()
+        [Theory]
+        [InlineData("Aged Brie")]
+        [InlineData("Backstage passes to a TAFKAL80ETC concert")]
+        public void QualityOfAnItemIsNeverGreaterThan50(string itemName)
         {
             var item = new Item
             {
-                Quality = 49,
-                SellIn = 0,
-                Name = "Aged Brie"
+                Quality = 50,
+                SellIn = 2,
+                Name = itemName
             };
 
             Program.UpdateItem(item);
-            Assert.Equal(2, item.Quality);
+            Assert.Equal(50, item.Quality);
+        }
+
+        [Fact]
+        public void Sulfuras_QualityDoesNotDecrease()
+        {
+            int quality = 1;
+            var item = new Item
+            {
+                Quality = quality,
+                SellIn = 1,
+                Name = "Sulfuras, Hand of Ragnaros"
+            };
+
+            Program.UpdateItem(item);
+            Assert.Equal(quality, item.Quality);
+        }
+
+        [Fact]
+        public void Sulfuras_SellInDoesNotDecrease()
+        {
+            int sellIn = 1;
+            var item = new Item
+            {
+                Quality = 1,
+                SellIn = sellIn,
+                Name = "Sulfuras, Hand of Ragnaros"
+            };
+
+            Program.UpdateItem(item);
+            Assert.Equal(sellIn, item.SellIn);
+        }
+
+        [Theory]
+        [InlineData(1,1)]
+        public void BackStagePasses_QualityIncreases(int expectedQuality, int sellIn)
+        {
+            var item = new Item
+            {
+                Quality = 50,
+                SellIn = 2,
+                Name = "Backstage passes to a TAFKAL80ETC concert"
+            };
+
+            Program.UpdateItem(item);
+            Assert.Equal(50, item.Quality);
         }
     }
 }
